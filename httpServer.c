@@ -20,7 +20,7 @@
 #define YELLOW   "\x1B[33m"
 #define RESET "\x1B[0m"
 
-const char HEAD[] = "HTTP/1.0 200 OK		\n\
+const char HEAD[] = "HTTP/1.1 200 OK		\n\
 										Server: Hostname		\n\
 										Content-Length: %ld		\
 									\nConnection: close			\
@@ -146,7 +146,7 @@ int checkHeader(char *header, char *path)
 		strcat(path, "index.html");
 
 	pch = strtok (NULL, " \r\n");
-	if(strcmp(pch, "HTTP/1.1") == 0 || strcmp(pch, "HTTP/1.0") == 0 )
+	if(strcmp(pch, "HTTP/1.1") == 0)
 		return SUCCESS;
 
 	printf("ERROR: checkHeader() - Invalid header.\n");
