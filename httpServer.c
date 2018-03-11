@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 					if ((fp = fopen(path, "r")) == NULL)
 					{
 						printf("ERROR: Failed to open file - [%s]\n", path);
-						return;
+						return ERROR;
 					}
 
 					int fd = fileno(fp), size;
@@ -165,10 +165,10 @@ int getFileSize(char *path)
 	if ((fp = fopen(path, "r")) == NULL)
 	{
 		printf("ERROR: Failed to open file - [%s]\n", path);
-		return;
+		return ERROR;
 	}
 
-	int fd = fileno(path);
+	int fd = fileno(fp);
 	if (fd < 0)
 	{
 		printf("\nERROR: getFileSize() - File size.\n");
