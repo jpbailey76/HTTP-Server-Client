@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 			{
 				long fileSize;
 				fileSize = getFileSize(path);
-				
+				printf("\nFilesize: [%l]\n", fileSize);
 				if(fileSize != ERROR)
 				{
 					int type = getExtension(path);
@@ -142,7 +142,7 @@ int checkHeader(char *header, char *path)
 	if(strcmp(pch, "HTTP/1.1") == 0 || strcmp(pch, "HTTP/1.0") == 0 )
 		return SUCCESS;
 
-	printf("checkHeader() - Invalid header.\n");
+	printf("ERROR: checkHeader() - Invalid header.\n");
 	return ERROR;
 }
 
@@ -155,6 +155,7 @@ long getFileSize(char *path)
 
 	int fd = open(path, O_RDONLY);
 	if (fd < 0)
+		printf("\nERROR: File size.\n");
 		return ERROR;
 
 	while((readed = read(fd, buff, BUFF_SIZE)) != 0) 
