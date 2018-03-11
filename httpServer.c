@@ -20,29 +20,21 @@
 #define YELLOW   "\x1B[33m"
 #define RESET "\x1B[0m"
 
-char * filetypes[] = {
- 	"image/gif", "image/jpeg","image/jpeg", "image/png", "image/zip",
-  "image/gz", "image/tar", "text/html", "text/html"};
-
-char * extensions[] = {
-	".gif", ".jpg",".jpeg" ".png", ".zip",
- ".gz", ".tar", ".htm", ".html"};
-
-const char HEAD[] = "HTTP/1.0 200 OK\n\
-										Server: Hostname\n\
-										Content-Length: %ld\
-										\nConnection: close\
-										\nContent-Type: %s\n\n";
+const char HEAD[] = "HTTP/1.0 200 OK		\n\
+										Server: Hostname		\n\
+										Content-Length: %ld		\
+									\nConnection: close			\
+									\nContent-Type: %s\n\n";
 
 const char ERROR_HEAD[] = "HTTP/1.1 403 Forbidden\n\
-													Server: Hostname\n\
-													Content-Length:7\
-													\nConnection: close\
-													\nContent-Type: text\\html\n\nNO FILE";										
+													Server: Hostname\n 			 \
+													Content-Length:7 				 \
+												\nConnection: close				 \
+												\nContent-Type: text\\html\n\nINVALID FILE";										
 
 int checkHeader(char *header, char *path);
 int getFileSize(char *path);
-int getExtension(char *path);
+int verifyExtension(char *path);
 
 int main(int argc, char **argv)
 {	
@@ -93,7 +85,12 @@ int main(int argc, char **argv)
 				printf("\nFilesize: [%d]\n", fileSize);
 				if(fileSize != ERROR)
 				{
-					int type = getExtension(path);
+					if(verifyExtension(path) == ERROR)
+					{
+						printf("ERROR: File is not of .html type.\n");
+						return ERROR;
+					}
+
 					if ((fp = fopen(path, "r")) == NULL)
 					{
 						printf("ERROR: Failed to open file - [%s]\n", path);
@@ -105,7 +102,7 @@ int main(int argc, char **argv)
 
 					printf("   RESPONSE:   \n"
 								 "===============");
-					sprintf(response, HEAD, (long)fileSize, filetypes[type]);
+					sprintf(response, HEAD, (long)fileSize, "text/html");
 					write(clientSockfd, response, strlen(response));
 
 					if(fd < 0)
@@ -176,32 +173,21 @@ int getFileSize(char *path)
 	}
 
 	while((count = read(fd, buff, BUFF_SIZE)) != 0) 
-	{
 		result += count;
-	}
 
 	fclose(fp);
 	return result;
 }
 
-int getExtension(char *path)
+int verifyExtension(char *path)
 {
 	path++;
 	while(*path != '\0' && *path != '.') 
-	{
 		path++;
-	}
 
 	printf("\nDEBUG: PATH = [%s]\n", path);
-
-	int i;
-	for(i = 0; i<9; i++) 
-	{
-		if(strcmp(path, extensions[i]) == 0)
-		{
-			return i;
-		}
-	}
-
-	return 8;
+	if(strcmp(path, ".html") != 0)
+		return ERROR;
+	else
+		return SUCCESS;
 }
