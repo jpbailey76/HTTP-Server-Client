@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 			{
 				long fileSize;
 				fileSize = getFileSize(path);
-				printf("\nFilesize: [%l]\n", fileSize);
+				printf("\nFilesize: [%lf]\n", fileSize);
 				if(fileSize != ERROR)
 				{
 					int type = getExtension(path);
