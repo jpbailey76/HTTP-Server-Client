@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 	serverAddr.sin_port = htons(PORT);
 
 	serverSockfd = socket(AF_INET, SOCK_STREAM, 0);
-  bind(serverSockfd, (struct sockaddr *)&server_addr, sizeof(server_addr));
+  bind(serverSockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 	listen(serverSockfd, SOMAXCONN);
 
 	printf("Server address: [%d]\n", serverAddr.sin_addr.s_addr);
