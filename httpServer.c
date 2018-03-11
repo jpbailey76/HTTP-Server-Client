@@ -32,7 +32,7 @@ const char ERROR_HEAD[] = "HTTP/1.1 403 Forbidden\n\
 												\nConnection: close				 \
 												\nContent-Type: text\\html\n\nINVALID FILE";										
 
-int checkHeader(char *header);
+int checkHeader(char *header, char *path);
 int getFileSize(char *path);
 int verifyExtension(char *path);
 
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 			char *path;
 			path = calloc(BUFF_SIZE, sizeof(char));
 
-			if(checkHeader(request) == SUCCESS)
+			if(checkHeader(request, path) == SUCCESS)
 			{
 				FILE *fp;
 				int fileSize = getFileSize(path);
@@ -133,12 +133,24 @@ int main(int argc, char **argv)
 	return SUCCESS;
 }
 
-int checkHeader(char *header)
+int checkHeader(char *header, char *path)
 {
-	char* getCheck = strstr(header, "GET");
-	char* httpCheck = strstr(header, "HTTP/1.1");
+	char *pch;
 
-	if((getCheck != NULL) && (httpCheck != NULL))
+	printf("[Path] = [%s]\n", path);
+	strcat(path,".");
+	printf("[Path strcat] = [%s]\n", path);
+	printf("[pch] = [%s]\n", pch);
+  pch = strtok(header," ");
+	printf("[pch strtok] = [%s]\n", pch);
+	pch = strtok (NULL, " ");
+	printf("[pch strtok] = [%s]\n", pch);
+	strcat(path,pch);
+	printf("[pch strcat path] = [%s]\n", pch);
+
+	pch = strtok (NULL, " \r\n");
+	printf("[pch] = [%s]\n", pch);
+	if(strcmp(pch, "HTTP/1.1") == 0)
 		return SUCCESS;
 
 	printf("ERROR: checkHeader() - Invalid header.\n");
