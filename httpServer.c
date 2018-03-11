@@ -140,16 +140,13 @@ int checkHeader(char *header, char *path)
   pch = strtok(header," ");
 	pch = strtok (NULL, " ");
 	strcat(path,pch);
-
-	char* httpCheck = strstr(header, "HTTP/1.1");
-	if(httpCheck == NULL)
-	{
-		printf("ERROR: checkHeader() - Invalid header.\n");
-		return ERROR;
-	}
+	pch = strtok (NULL, " \r\n");
+	if(strcmp(pch, "HTTP/1.1") == 0)
+		return SUCCESS;
 
 	printf("Path = [%s]\n", path);
-	return SUCCESS;
+	printf("ERROR: checkHeader() - Invalid header.\n");
+	return ERROR;
 }
 
 int getFileSize(char *path)
