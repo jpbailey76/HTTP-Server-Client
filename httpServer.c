@@ -137,11 +137,19 @@ int checkHeader(char *header, char *path)
 {
 	char *requestType, *file, *protocol;
 
+	// Parse
 	strcat(path,".");
   requestType = strtok(header," ");
 	file = strtok (NULL, " ");
 	strcat(path, file);
 	protocol = strtok (NULL, " \r\n");
+
+	// Display
+	printf("Request Type: [%s]\n", requestType);
+	printf("File: [%s]\n", file);
+	printf("protocol: [%s]\n", protocol);
+
+	// Verify
 	if(strcmp(protocol, "HTTP/1.1") == 0)
 		return SUCCESS;
 
