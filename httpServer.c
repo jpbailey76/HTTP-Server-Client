@@ -96,6 +96,8 @@ int main(int argc, char **argv)
 					char buff[BUFF_SIZE];
 					int readed;
 
+					printf("   RESPONSE:   \n"
+								 "===============");
 					sprintf(response, HEAD, fileSize, filetypes[type]);
 					write(clientSockfd, response, strlen(response));
 
