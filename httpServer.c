@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
 		read(clientSockfd, request, BUFF_SIZE);
 		printf("   RESPONSE:   \n"
-								 "===============");
+					 "===============");
 		printf("\n%s\n", request);
 
 		pid = fork();
@@ -87,15 +87,21 @@ int main(int argc, char **argv)
 
 			if(checkHeader(request, path) == SUCCESS)
 			{
-				int fileSize;
-				fileSize = getFileSize(path);
+				FILE *fp;
+				int fileSize = getFileSize(path);
+
 				printf("\nFilesize: [%d]\n", fileSize);
 				if(fileSize != ERROR)
 				{
 					int type = getExtension(path);
-					int fd = open(path, O_RDONLY);
+					if ((fp = fopen(path, "r")) == NULL)
+					{
+						printf("ERROR: Failed to open file - [%s]\n", path);
+						return;
+					}
+
+					int fd = fileno(fp), size;
 					char buff[BUFF_SIZE];
-					int readed;
 
 					printf("   RESPONSE:   \n"
 								 "===============");
@@ -108,12 +114,12 @@ int main(int argc, char **argv)
 						return ERROR;
 					}
 						
-					while((readed = read(fd, buff, BUFF_SIZE)) != 0) 
+					while((size = read(fd, buff, BUFF_SIZE)) != 0) 
 					{
-						write(clientSockfd, buff, readed);
+						write(clientSockfd, buff, size);
 						memset(buff, 0, strlen(buff));
 					}
-					close(fd);
+					fclose(fp);
 				}
 				else
 					write(clientSockfd, ERROR_HEAD, strlen(ERROR_HEAD));
@@ -152,22 +158,29 @@ int checkHeader(char *header, char *path)
 
 int getFileSize(char *path)
 {
-	int result = 0;
-	int readed;
+	int result = 0, count;
 	char buff[BUFF_SIZE];
+	FILE *fp;
 
-	int fd = open(path, O_RDONLY);
+	if ((fp = fopen(path, "r")) == NULL)
+	{
+		printf("ERROR: Failed to open file - [%s]\n", path);
+		return;
+	}
+
+	int fd = fileno(path);
 	if (fd < 0)
 	{
 		printf("\nERROR: getFileSize() - File size.\n");
 		return ERROR;
 	}
-	
-	while((readed = read(fd, buff, BUFF_SIZE)) != 0) 
+
+	while((count = read(fd, buff, BUFF_SIZE)) != 0) 
 	{
-		result += readed;
+		result += count;
 	}
 
+	fclose(fp);
 	return result;
 }
 
