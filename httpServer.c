@@ -66,8 +66,6 @@ int main(int argc, char **argv)
 		memset(request, 0, sizeof(request));
 
 		read(clientSockfd, request, BUFF_SIZE);
-		printf("   RESPONSE:   \n"
-					 "===============1");
 		printf("\n%s\n", request);
 
 		pid = fork();
