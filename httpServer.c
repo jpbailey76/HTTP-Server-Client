@@ -99,10 +99,10 @@ int main(int argc, char **argv)
 
 					printf("   RESPONSE:   \n"
 								 "===============");
-					sprintf(response, HEAD, fileSize, filetypes[type]);
+					sprintf(response, HEAD, (long)fileSize, filetypes[type]);
 					write(clientSockfd, response, strlen(response));
 
-					if (fd < 0)
+					if(fd < 0)
 						return ERROR;
 					while((readed = read(fd, buff, BUFF_SIZE)) != 0) 
 					{
