@@ -192,6 +192,8 @@ int getExtension(char *path)
 		path++;
 	}
 
+	printf("\nDEBUG: PATH = [%s]\n", path);
+
 	int i;
 	for(i = 0; i<9; i++) 
 	{
