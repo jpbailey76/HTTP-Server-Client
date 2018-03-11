@@ -142,9 +142,6 @@ int checkHeader(char *header, char *path)
 	pch = strtok (NULL, " ");
 	strcat(path,pch);
 
-	if(strcmp(path, "./") == 0)
-		strcat(path, "index.html");
-
 	pch = strtok (NULL, " \r\n");
 	if(strcmp(pch, "HTTP/1.1") == 0)
 		return SUCCESS;
