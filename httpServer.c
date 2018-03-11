@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
 
 // Defines 
 #define ERROR -1
@@ -32,6 +33,10 @@ const char ERROR_HEAD[] = "HTTP/1.1 403 Forbidden\n\
 													\nConnection: close\
 													\nContent-Type: text\\html\n\nNO FILE";										
 
+int checkHeader(char *header, char *path);
+long getFileSize(char *path);
+int getExtension(char *path);
+
 int main(int argc, char **argv)
 {	
 	int serverSockfd, clientSockfd, pid;
@@ -43,7 +48,7 @@ int main(int argc, char **argv)
 		puts("Usage: ./httpserver\n");
 		return ERROR;
 	}
-	
+
 	memset(&serverAddr, 0, sizeof(serverAddr));
   serverAddr.sin_family = AF_INET;
   serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
