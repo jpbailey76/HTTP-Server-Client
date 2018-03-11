@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 					char buff[BUFF_SIZE];
 
 					printf("   RESPONSE:   \n"
-								 "===============");
+								 "===============\n");
 					sprintf(response, HEAD, (long)fileSize, "text/html");
 					write(clientSockfd, response, strlen(response));
 
