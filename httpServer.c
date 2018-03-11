@@ -135,20 +135,16 @@ int main(int argc, char **argv)
 
 int checkHeader(char *header, char *path)
 {
-	char *pch;
+	char *requestType, *file, *protocol;
+
 	strcat(path,".");
-  pch = strtok(header," ");
-  printf("pch = [%s]\n", pch);
-	pch = strtok (NULL, " ");
-  printf("pch = [%s]\n", pch);
-	strcat(path,pch);
-  printf("pch = [%s]\n", pch);
-	pch = strtok (NULL, " \r\n");
-  printf("pch = [%s]\n", pch);
-	if(strcmp(pch, "HTTP/1.1") == 0)
+  requestType = strtok(header," ");
+	file = strtok (NULL, " ");
+	strcat(path, file);
+	protocol = strtok (NULL, " \r\n");
+	if(strcmp(protocol, "HTTP/1.1") == 0)
 		return SUCCESS;
 
-	printf("Path = [%s]\n", path);
 	printf("ERROR: checkHeader() - Invalid header.\n");
 	return ERROR;
 }
