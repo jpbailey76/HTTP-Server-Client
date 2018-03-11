@@ -103,7 +103,11 @@ int main(int argc, char **argv)
 					write(clientSockfd, response, strlen(response));
 
 					if(fd < 0)
+					{
+						printf("\nERROR: main() - File size.\n");
 						return ERROR;
+					}
+						
 					while((readed = read(fd, buff, BUFF_SIZE)) != 0) 
 					{
 						write(clientSockfd, buff, readed);
@@ -155,7 +159,7 @@ int getFileSize(char *path)
 
 	int fd = open(path, O_RDONLY);
 	if (fd < 0)
-		printf("\nERROR: File size.\n");
+		printf("\nERROR: getFileSize() - File size.\n");
 		return ERROR;
 
 	while((readed = read(fd, buff, BUFF_SIZE)) != 0) 
