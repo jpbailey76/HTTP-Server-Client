@@ -41,7 +41,7 @@ const char ERROR_HEAD[] = "HTTP/1.1 403 Forbidden\n\
 													\nContent-Type: text\\html\n\nNO FILE";										
 
 int checkHeader(char *header, char *path);
-long getFileSize(char *path);
+int getFileSize(char *path);
 int getExtension(char *path);
 
 int main(int argc, char **argv)
@@ -87,9 +87,9 @@ int main(int argc, char **argv)
 
 			if(checkHeader(request, path) == SUCCESS)
 			{
-				long fileSize;
+				int fileSize;
 				fileSize = getFileSize(path);
-				printf("\nFilesize: [%lf]\n", fileSize);
+				printf("\nFilesize: [%d]\n", fileSize);
 				if(fileSize != ERROR)
 				{
 					int type = getExtension(path);
@@ -146,7 +146,7 @@ int checkHeader(char *header, char *path)
 	return ERROR;
 }
 
-long getFileSize(char *path)
+int getFileSize(char *path)
 {
 	int result = 0;
 	int readed;
