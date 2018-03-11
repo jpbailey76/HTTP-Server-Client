@@ -21,6 +21,10 @@ char * filetypes[] = {
  	"image/gif", "image/jpeg","image/jpeg", "image/png", "image/zip",
   "image/gz", "image/tar", "text/html", "text/html"};
 
+char * extensions[] = {
+	".gif", ".jpg",".jpeg" ".png", ".zip",
+ ".gz", ".tar", ".htm", ".html"};
+
 const char HEAD[] = "HTTP/1.0 200 OK\n\
 										Server: Hostname\n\
 										Content-Length: %ld\
@@ -43,7 +47,7 @@ int main(int argc, char **argv)
 	struct sockaddr_in serverAddr;
 	char request[BUFF_SIZE];
 
-	if (argc != 1) 
+	if(argc != 1) 
 	{
 		puts("Usage: ./httpserver\n");
 		return ERROR;
