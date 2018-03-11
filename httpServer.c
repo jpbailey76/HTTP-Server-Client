@@ -154,14 +154,15 @@ int getFileSize(char *path)
 {
 	int result = 0;
 	int readed;
-
 	char buff[BUFF_SIZE];
 
 	int fd = open(path, O_RDONLY);
 	if (fd < 0)
+	{
 		printf("\nERROR: getFileSize() - File size.\n");
 		return ERROR;
-
+	}
+	
 	while((readed = read(fd, buff, BUFF_SIZE)) != 0) 
 	{
 		result += readed;
