@@ -74,8 +74,9 @@ int main(int argc, char **argv)
 		memset(request, 0, sizeof(request));
 
 		read(clientSockfd, request, BUFF_SIZE);
-		write(1, request, strlen(request));
-		write(1, "\n\n", sizeof("\n\n"));
+		printf("   RESPONSE:   \n"
+								 "===============");
+		printf("\n%s\n", request);
 
 		pid = fork();
 		if(pid == 0)
