@@ -100,9 +100,9 @@ int main(int argc, char **argv)
 
 					printf("   RESPONSE:   \n"
 								 "===============\n");
-					if(strstr(path, ".html"))
+					if(strstr(path, ".html") != NULL)
 						sprintf(response, HEAD, (long)fileSize, "text/html");
-					else if(strstr(path, ".jpg"))
+					else if(strstr(path, ".jpg") != NULL)
 						sprintf(response, HEAD, (long)fileSize, "image/jpeg");
 					write(clientSockfd, response, strlen(response));
 
