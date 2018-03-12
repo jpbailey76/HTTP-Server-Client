@@ -191,7 +191,8 @@ int verifyExtension(char *path)
 		path++;
 
 	printf("\nDEBUG: PATH = [%s]\n", path);
-	if(strcmp(path, ".html") != 0 || strcmp(path, ".png") != 0)
+	if( (strcmp(path, ".html") != 0) 
+		||(strcmp(path, ".jpg")  != 0) )
 		return ERROR;
 	else
 		return SUCCESS;
