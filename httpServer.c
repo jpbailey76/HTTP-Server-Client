@@ -102,8 +102,8 @@ int main(int argc, char **argv)
 								 "===============\n");
 					if(strstr(path, ".html"))
 						sprintf(response, HEAD, (long)fileSize, "text/html");
-					else if(strstr(path, ".png"))
-						sprintf(response, HEAD, (long)fileSize, "image/png");
+					else if(strstr(path, ".jpg"))
+						sprintf(response, HEAD, (long)fileSize, "image/jpeg");
 					write(clientSockfd, response, strlen(response));
 
 					if(fd < 0)
