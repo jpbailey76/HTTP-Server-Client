@@ -100,7 +100,10 @@ int main(int argc, char **argv)
 
 					printf("   RESPONSE:   \n"
 								 "===============\n");
-					sprintf(response, HEAD, (long)fileSize, "text/html");
+					if(strstr(path, ".html"))
+						sprintf(response, HEAD, (long)fileSize, "text/html");
+					else if(strstr(path, ".png"))
+						sprintf(response, HEAD, (long)fileSize, "image/png");
 					write(clientSockfd, response, strlen(response));
 
 					if(fd < 0)
@@ -188,7 +191,7 @@ int verifyExtension(char *path)
 		path++;
 
 	printf("\nDEBUG: PATH = [%s]\n", path);
-	if(strcmp(path, ".html") != 0)
+	if(strcmp(path, ".html") != 0 || strcmp(path, ".png") != 0)
 		return ERROR;
 	else
 		return SUCCESS;
