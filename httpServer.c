@@ -12,7 +12,7 @@
 // Defines 
 #define ERROR -1
 #define SUCCESS 0
-#define BUFF_SIZE 1024
+#define BUFF_SIZE 2048
 #define PORT 60069
 
 #define RED "\x1b[31m"
