@@ -156,6 +156,8 @@ int checkHeader(char *header, char *path)
   requestType = strtok(header," ");
 	file = strtok (NULL, " ");
 	strcat(path, file);
+	if(strcmp(path, "./") == 0)
+		strcat(path, "index.html");
 	protocol = strtok (NULL, " \r\n");
 
 	// Display
