@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 				{
 					if(verifyExtension(path) == ERROR)
 					{
-						printf("ERROR: File is not of .html or .jpg type.\n");
+						printf("ERROR: File is not of .html type.\n");
 						return ERROR;
 					}
 
@@ -190,9 +190,10 @@ int verifyExtension(char *path)
 	while(*path != '\0' && *path != '.') 
 		path++;
 
-	if( (strcmp(path, ".html") == 0) 
-		||(strcmp(path, ".jpg")  == 0) )
-		return SUCCESS;
-	else
+	printf("\nDEBUG: PATH = [%s]\n", path);
+	if( (strcmp(path, ".html") != 0) 
+		||(strcmp(path, ".jpg")  != 0) )
 		return ERROR;
+	else
+		return SUCCESS;
 }
