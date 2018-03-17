@@ -96,6 +96,7 @@ int main(int argc, char **argv)
 	sprintf(buffer, "GET %s HTTP/1.1\r\n", fileRequest);
 
 	printf("BUFFER1 = [%s]\n", buffer);
+	printf("DEBUG1\n");
 	
 	req = write(sockfd, buffer, strlen(buffer));
 	if(req < 0)
@@ -105,10 +106,15 @@ int main(int argc, char **argv)
 	}
 	else
 	{
+			printf("DEBUG2\n");
 	   while(write(sockfd, buffer, sizeof(buffer)) > 0);
+			printf("DEBUG3\n");
 	}
 	
 	printf("BUFFER2 = [%s]\n", buffer);
+
+	printf("DEBUG4\n");
+
 
 	bzero(buffer, MAX_MESSAGE_LENGTH);
 	
