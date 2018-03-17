@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 	listen(serverSockfd, SOMAXCONN);
 
 	printf(" Server started. Now accepting connections on:");
-	printf("===============================================")
+	printf("===============================================");
 	printf("Server address: [127.0.0.1 / LOCALHOST]\n");
 	printf("Server port: [%d]\n", PORT);
 
