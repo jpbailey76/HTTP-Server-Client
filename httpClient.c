@@ -12,7 +12,7 @@
 
 /* consts and definitions */
 #define MAX_LENGTH 256
-#define MAX_MESSAGE_LENGTH 4096
+#define MAX_MESSAGE_LENGTH 2048
 
 /* prototypes */
 void requestFile();
