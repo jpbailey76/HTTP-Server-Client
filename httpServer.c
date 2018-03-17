@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 
 		// Read their request
 		read(clientSockfd, request, BUFF_SIZE);
-		printf("\n%s\n", request);
+		printf("Recieved a request from client: \n%s\n", request);
 
 		// Create a new process for responding
 		pid = fork();
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 				// Verify that the file requested exists
 				int fileSize = getFileSize(path);
 
-				printf("\nFilesize: [%d]\n", fileSize);
+				printf("Filesize: [%d]\n", fileSize);
 				if(fileSize != ERROR)
 				{
 					// Verify that the extension of the file is valid
@@ -117,8 +117,6 @@ int main(int argc, char **argv)
 					}
 
 					// Write our response to the client
-					printf("   RESPONSE:   \n"
-								 "===============\n");
 					if(strstr(path, ".html") != NULL)
 						sprintf(response, HEADER, (long)fileSize, "text/html");
 					else if(strstr(path, ".jpg") != NULL)
@@ -128,7 +126,7 @@ int main(int argc, char **argv)
 					while((size = read(filefd, buff, BUFF_SIZE)) != 0) 
 					{
 						write(clientSockfd, buff, size);
-						printf("\nSending file data =============\n%s\n=============\n", buff);
+						printf("\nSending File\n=============\n%s\n=============\n", buff);
 						memset(buff, 0, strlen(buff));
 					}
 					fclose(fp);
@@ -164,7 +162,7 @@ int checkHeader(char *header, char *path)
 	// Display
 	printf("Request Type: [%s]\n", requestType);
 	printf("File: [%s]\n", file);
-	printf("protocol: [%s]\n", protocol);
+	printf("Protocol: [%s]\n", protocol);
 
 	// Verify
 	if(strcmp(protocol, "HTTP/1.1") == 0)
