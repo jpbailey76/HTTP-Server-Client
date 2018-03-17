@@ -124,10 +124,13 @@ int main(int argc, char **argv)
 					else if(strstr(path, ".jpg") != NULL)
 						sprintf(response, HEADER, (long)fileSize, "image/jpeg");
 					write(clientSockfd, response, strlen(response));
+				  printf("\nRESPONSE = [%s]\n", response);
+
 
 					while((size = read(filefd, buff, BUFF_SIZE)) != 0) 
 					{
 						write(clientSockfd, buff, size);
+						printf("\nBUFF = [%s]\n", buff);
 						memset(buff, 0, strlen(buff));
 					}
 					fclose(fp);
