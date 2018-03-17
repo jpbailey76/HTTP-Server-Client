@@ -88,18 +88,18 @@ int main(int argc, char **argv)
 	}
 	
 	int req;
-	char *buffer = (char*)calloc(MAX_MESSAGE_LENGTH, sizeof(char));
+	char request[MAX_MESSAGE_LENGTH];
 	printf("\nWhat file do you want? ");
 	scanf("%256s", fileRequest);
-	
-	bzero(buffer, MAX_MESSAGE_LENGTH);
-	sprintf(buffer, "GET %s HTTP/1.1\r\n", fileRequest);
-	strcat(buffer, "Connection: Keep-Alive\r\n\r\n");
 
-	printf("\nBUFFER1 = [%s]\n", buffer);
+  memset(request, 0, sizeof(request));
+	sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
+	strcat(request, "Connection: Keep-Alive\r\n\r\n");
+
+	printf("\nBUFFER1 = [%s]\n", request);
 	printf("DEBUG1\n");
 	
-	req = write(sockfd, buffer, strlen(buffer));
+	req = write(sockfd, request, strlen(request));
 	if(req < 0)
 	{
 	   printf("\nError! Could not write to socket!\n");
@@ -108,18 +108,18 @@ int main(int argc, char **argv)
 	else
 	{
 			printf("DEBUG2\n");
-	   while(write(sockfd, buffer, sizeof(buffer)) > 0);
+	   while(write(sockfd, request, sizeof(request)) > 0);
 			printf("DEBUG3\n");
 	}
 	
-	printf("BUFFER2 = [%s]\n", buffer);
+	printf("BUFFER2 = [%s]\n", request);
 
 	printf("DEBUG4\n");
 
 
-	bzero(buffer, MAX_MESSAGE_LENGTH);
+	bzero(request, MAX_MESSAGE_LENGTH);
 	
-	req = read(sockfd, buffer, MAX_MESSAGE_LENGTH);
+	req = read(sockfd, request, MAX_MESSAGE_LENGTH);
 	if(req < 0)
 	{
 	   printf("\nError! Could not read from socket!\n");
@@ -127,22 +127,22 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-	   while(read(sockfd, buffer, sizeof(buffer)) > 0);
+	   while(read(sockfd, request, sizeof(request)) > 0);
 	}
 	
 	printf("\n\n\n\n\n");
 	
-	printf("Buffer: [%s]\n", buffer);
-	bzero(buffer, MAX_MESSAGE_LENGTH);
+	printf("Buffer: [%s]\n", request);
+	bzero(request, MAX_MESSAGE_LENGTH);
 	bzero(fileRequest, MAX_LENGTH);
-	printf("Buffer is now [%s]\n", buffer);
+	printf("Buffer is now [%s]\n", request);
 	printf("Req is now [%s]\n", fileRequest);
   printf("\nWhat file do you want? ");
 	scanf("%256s", fileRequest);
 	
-	bzero(buffer, MAX_MESSAGE_LENGTH);
-	sprintf(buffer, "GET %s HTTP/1.1\r\n", fileRequest);
-	req = write(sockfd, buffer, strlen(buffer));
+	bzero(request, MAX_MESSAGE_LENGTH);
+	sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
+	req = write(sockfd, request, strlen(request));
 	if(req < 0)
 	{
 	   printf("\nError! Could not write to socket!\n");
@@ -150,12 +150,12 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-	   while(write(sockfd, buffer, sizeof(buffer)) > 0);
+	   while(write(sockfd, request, sizeof(request)) > 0);
 	}
 	
-	bzero(buffer, MAX_MESSAGE_LENGTH);
+	bzero(request, MAX_MESSAGE_LENGTH);
 	
-	req = read(sockfd, buffer, MAX_MESSAGE_LENGTH);
+	req = read(sockfd, request, MAX_MESSAGE_LENGTH);
 	if(req < 0)
 	{
 	   printf("\nError! Could not read from socket!\n");
@@ -163,10 +163,10 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-	   while(read(sockfd, buffer, sizeof(buffer)) > 0);
+	   while(read(sockfd, request, sizeof(request)) > 0);
 	}
   
-  printf("Buffer: [%s]\n", buffer);
+  printf("Buffer: [%s]\n", request);
   
   
   
