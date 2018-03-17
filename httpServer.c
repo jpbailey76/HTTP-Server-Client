@@ -59,7 +59,9 @@ int main(int argc, char **argv)
   bind(serverSockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 	listen(serverSockfd, SOMAXCONN);
 
-	printf("Server address: [%d]\n", serverAddr.sin_addr.s_addr);
+	printf(" Server started. Now accepting connections on:");
+	printf("===============================================")
+	printf("Server address: [127.0.0.1 / LOCALHOST]\n");
 	printf("Server port: [%d]\n", PORT);
 
 	// Receive connections
