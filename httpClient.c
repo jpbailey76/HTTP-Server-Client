@@ -94,8 +94,9 @@ int main(int argc, char **argv)
 	
 	bzero(buffer, MAX_MESSAGE_LENGTH);
 	sprintf(buffer, "GET %s HTTP/1.1\r\n", fileRequest);
+	strcat(buffer, "Connection: Keep-Alive\r\n\r\n");
 
-	printf("BUFFER1 = [%s]\n", buffer);
+	printf("\nBUFFER1 = [%s]\n", buffer);
 	printf("DEBUG1\n");
 	
 	req = write(sockfd, buffer, strlen(buffer));
