@@ -94,6 +94,8 @@ int main(int argc, char **argv)
 	
 	bzero(buffer, MAX_MESSAGE_LENGTH);
 	sprintf(buffer, "GET %s HTTP/1.1\r\n", fileRequest);
+
+	printf("BUFFER1 = [%s]\n", buffer);
 	
 	req = write(sockfd, buffer, strlen(buffer));
 	if(req < 0)
@@ -106,6 +108,8 @@ int main(int argc, char **argv)
 	   while(write(sockfd, buffer, sizeof(buffer)) > 0);
 	}
 	
+	printf("BUFFER2 = [%s]\n", buffer);
+
 	bzero(buffer, MAX_MESSAGE_LENGTH);
 	
 	req = read(sockfd, buffer, MAX_MESSAGE_LENGTH);
