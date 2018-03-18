@@ -31,7 +31,7 @@ int main(int argc, char **argv)
   unsigned short* httpPort = (unsigned short*)calloc(1, sizeof(short));
   
   /* boolean to check if we're still connected to the server */
-  char isConnected = 0;
+  // char isConnected = 0;
   
   /* socket declarations */
   int sockfd;
@@ -53,10 +53,10 @@ int main(int argc, char **argv)
 	  if(server == NULL)
 	  {
 	     printf("\nError! No such host at \"%s\"\n", httpAddress);
-	     invalid == 1;
+	     invalid = 1;
 		}
   	else
-  		invalid = 0
+  		invalid = 0;
   }
 
   /* create the client socket */
