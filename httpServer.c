@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 				// Verify that the file requested exists
 				int fileSize = getFileSize(path);
 
-				printf("Filesize: [%d]\n", fileSize);
+				printf(YELLOW"Filesize: "RESET"[%d]\n", fileSize);
 				if(fileSize != ERROR)
 				{
 					// Verify that the extension of the file is valid
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 					while((size = read(filefd, buff, BUFF_SIZE)) != 0) 
 					{
 						write(clientSockfd, buff, size);
-						printf(YELLOW"\nSending File\n=============\n%s\n=============\n"RESET, buff);
+						printf(YELLOW"\nSending File\n============="RESET"\n%s\n"YELLOW"=============\n"RESET, buff);
 						memset(buff, 0, strlen(buff));
 					}
 					fclose(fp);
