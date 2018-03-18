@@ -43,7 +43,7 @@ int main(int argc, char **argv)
   while(invalid)
 	{
   	printf("Enter address of HTTP server: ");
-  	scanf("%s", &httpAddress);
+  	scanf("%s", httpAddress);
 
   	printf("Enter port on HTTP server: ");
   	scanf("%d", &httpPort);
