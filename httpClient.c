@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 		printf("\nWhat file do you want? ");
 		scanf("%256s", fileRequest);
 
-		sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
+		sprintf(request, "GET /%s HTTP/1.1\r\n", fileRequest);
 		strcat(request, "Connection: Keep-Alive\r\n\r\n");
 
 		// Send the request
