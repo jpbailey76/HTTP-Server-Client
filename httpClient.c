@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 		scanf("%256s", fileRequest);
 
 		memset(request, 0, sizeof(request));
-		sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
+		sprintf(request, "GET /%s HTTP/1.1\r\n", fileRequest);
 		strcat(request, "Connection: Keep-Alive\r\n\r\n");
 
 		// Send the request
