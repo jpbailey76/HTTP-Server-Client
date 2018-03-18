@@ -60,8 +60,8 @@ int main(int argc, char **argv)
 
 	printf(YELLOW" Server started. Now accepting connections on:\n");
 	printf("===============================================\n"RESET);
-	printf("Server address: [127.0.0.1 / LOCALHOST]\n");
-	printf("Server port: [%d]\n\n", PORT);
+	printf(YELLOW"Server address:"RESET" [127.0.0.1 / LOCALHOST]\n");
+	printf(YELLOW"Server port: "RESET"[%d]\n\n", PORT);
 
 	// Receive connections
 	while(1)
