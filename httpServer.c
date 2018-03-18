@@ -16,7 +16,6 @@
 #define PORT 60069
 
 #define RED "\x1b[31m"
-#define BLUE   "\x1B[34m"
 #define YELLOW   "\x1B[33m"
 #define RESET "\x1B[0m"
 
@@ -59,10 +58,10 @@ int main(int argc, char **argv)
   bind(serverSockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 	listen(serverSockfd, SOMAXCONN);
 
-	printf(" Server started. Now accepting connections on:\n");
-	printf("===============================================\n");
+	printf(YELLOW" Server started. Now accepting connections on:\n");
+	printf("===============================================\n"RESET);
 	printf("Server address: [127.0.0.1 / LOCALHOST]\n");
-	printf("Server port: [%d]\n", PORT);
+	printf("Server port: [%d]\n\n", PORT);
 
 	// Receive connections
 	while(1)
@@ -73,7 +72,7 @@ int main(int argc, char **argv)
 
 		// Read their request
 		read(clientSockfd, request, BUFF_SIZE);
-		printf("Recieved a request from client: \n%s\n", request);
+		printf(YELLOW"Recieved a request from client:" RESET "\n%s\n", request);
 
 		// Create a new process for responding
 		pid = fork();
@@ -98,14 +97,14 @@ int main(int argc, char **argv)
 					// We only handle html and jpg
 					if(verifyExtension(path) == ERROR)
 					{
-						printf("ERROR: File is not of .html or .jpg type.\n");
+						printf(RED"ERROR:"RESET"File is not of .html or .jpg type.\n");
 						return ERROR;
 					}
 
 					// Open the requested file
 					if ((fp = fopen(path, "r")) == NULL)
 					{
-						printf("ERROR: Failed to open file - [%s]\n", path);
+						printf(RED"ERROR:"RESET"Failed to open file - [%s]\n", path);
 						return ERROR;
 					}
 
@@ -114,7 +113,7 @@ int main(int argc, char **argv)
 					char buff[BUFF_SIZE];
 					if(filefd < 0)
 					{
-						printf("\nERROR: main() - Invalid file descriptor.\n");
+						printf(RED"\nERROR:"RESET" main() - Invalid file descriptor.\n");
 						return ERROR;
 					}
 
@@ -128,7 +127,7 @@ int main(int argc, char **argv)
 					while((size = read(filefd, buff, BUFF_SIZE)) != 0) 
 					{
 						write(clientSockfd, buff, size);
-						printf("\nSending File\n=============\n%s\n=============\n", buff);
+						printf(YELLOW"\nSending File\n=============\n%s\n=============\n"RESET, buff);
 						memset(buff, 0, strlen(buff));
 					}
 					fclose(fp);
@@ -162,15 +161,15 @@ int checkHeader(char *header, char *path)
 	protocol = strtok (NULL, " \r\n");
 
 	// Display
-	printf("Request Type: [%s]\n", requestType);
-	printf("File: [%s]\n", file);
-	printf("Protocol: [%s]\n", protocol);
+	printf(YELLOW"Request Type: "RESET"[%s]\n", requestType);
+	printf(YELLOW"File: "RESET"[%s]\n", file);
+	printf(YELLOW"Protocol: "RESET"[%s]\n", protocol);
 
 	// Verify
 	if(strcmp(protocol, "HTTP/1.1") == 0)
 		return SUCCESS;
 
-	printf("ERROR: checkHeader() - Invalid header.\n");
+	printf(RED"ERROR:"RESET" checkHeader() - Invalid header.\n");
 	return ERROR;
 }
 
@@ -183,7 +182,7 @@ int getFileSize(char *path)
 	// Open file at path
 	if ((fp = fopen(path, "r")) == NULL)
 	{
-		printf("ERROR: Failed to open file - [%s]\n", path);
+		printf(RED"ERROR:"RESET" Failed to open file - [%s]\n", path);
 		return ERROR;
 	}
 
@@ -191,7 +190,7 @@ int getFileSize(char *path)
 	int fd = fileno(fp);
 	if (fd < 0)
 	{
-		printf("\nERROR: getFileSize() - File size.\n");
+		printf(RED"\nERROR:"RESET" getFileSize() - File size.\n");
 		return ERROR;
 	}
 
