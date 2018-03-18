@@ -15,8 +15,7 @@
 #define MAX_MESSAGE_LENGTH 2048
 
 /* prototypes */
-void requestFile();
-unsigned char isConnected();
+void printBinary(char*);
 
 int main(int argc, char **argv)
 {
@@ -28,7 +27,7 @@ int main(int argc, char **argv)
   char fileRequest[MAX_LENGTH];
   
   /* server port */
-  int httpPort;
+  unsigned short httpPort;
   
   /* boolean to check if we're still connected to the server */
   // char isConnected = 0;
@@ -38,7 +37,7 @@ int main(int argc, char **argv)
   struct sockaddr_in serverAddr;
   struct hostent *server;
   
-  int invalid = 1;
+  char invalid = 1;
   /* get HTTP address from user */
   while(invalid)
 	{
@@ -46,7 +45,7 @@ int main(int argc, char **argv)
   	scanf("%s", httpAddress);
 
   	printf("Enter port on HTTP server: ");
-  	scanf("%d", &httpPort);
+  	scanf("%hu", &httpPort);
 
 	  /* check if the address is valid */
   	server = gethostbyname((char*)httpAddress);
@@ -60,6 +59,9 @@ int main(int argc, char **argv)
   }
 	
 	invalid = 1;
+		int req;
+	  char request[MAX_MESSAGE_LENGTH];
+	  char response[MAX_MESSAGE_LENGTH];
 	while(invalid)
 	{
 		/* create the client socket */
@@ -69,13 +71,13 @@ int main(int argc, char **argv)
 	  serverAddr.sin_family = AF_INET;
 		serverAddr.sin_port = htons(httpPort);
 		sockfd = socket(AF_INET, SOCK_STREAM, 0);
-		
+
 		/* check the socket */
 		if(sockfd < 0)
 		{
 		   printf("\nError! Could not open socket\n");
 		   close(sockfd);
-		   continue;
+		   exit(1);
 		}
 		
 		/* test connection */
@@ -83,20 +85,23 @@ int main(int argc, char **argv)
 		{
 		   printf("\nError: Connection to server failed!\n");
 		   close(sockfd);
-		   continue;
+		   exit(1);
 		}
 		else
 		{
 		   printf("\nConnected to server.\n");
 		}
-
-		int req;
-		char request[MAX_MESSAGE_LENGTH];
-		char response[MAX_MESSAGE_LENGTH];
+		
+		/* clear buffers */
+		req = 0;
+		bzero(fileRequest, MAX_LENGTH);
+		bzero(request, MAX_MESSAGE_LENGTH);
+		bzero(response, MAX_MESSAGE_LENGTH);
+		
+		/* ask which file to get */
 		printf("\nWhat file do you want? ");
 		scanf("%256s", fileRequest);
 
-		memset(request, 0, sizeof(request));
 		sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
 		strcat(request, "Connection: Keep-Alive\r\n\r\n");
 
@@ -105,38 +110,50 @@ int main(int argc, char **argv)
 		if(req < 0)
 		{
 		   printf("\nError: Could not write to socket!\n");
-		   continue;
+		   exit(1);
 		}
 		else
 		{
 		   printf("\nRequest sent!\n");
 		}
 		printf("\nBUFFER2 = [%s]\n", request);
-		bzero(request, MAX_MESSAGE_LENGTH);
 
 		// Read the response
-		req = read(sockfd, response, MAX_MESSAGE_LENGTH);
-		if(req < 0)
-		{
-		   printf("\nError! Could not read from socket!\n");
-		   exit(1);
-		}
-		else
-		{
-			printf("\nReceiving response.\n");
-		   // while(read(sockfd, request, sizeof(request)) > 0);
-		}
+		//req = read(sockfd, response, MAX_MESSAGE_LENGTH);
 		printf("Server Response:\n");
 		printf("================\n");
-		printf("%s", response);
+		while(read(sockfd, response, MAX_MESSAGE_LENGTH-1) != 0)
+		{
+		   printBinary((char*)response);
+		   bzero(response, MAX_MESSAGE_LENGTH);
+		}
+		printf("\n================\n");
+
 		close(sockfd);
 	}
   
   return 0;
 }
 
-void requestFile()
+/* this functions prints out a buffer, character by character, on stdout
+ *   as the client may receive non-textual binary data, this can be used
+ *   to safely substitute non-printable characters without affecting the
+ *   string or displaying garbage
+ *
+ * @ param 1 - string buffer to print
+ */
+void printBinary(char* buffer)
 {
+   int i;
+   unsigned int length = strlen(buffer);
+   for(i = 0; i < length; i++)
+   {
+      if((buffer[i] >= 32 && buffer[i] <= 126)
+         || buffer[i] == '\n' || buffer[i] == '\t'
+         || buffer[i] == '\r')
+      {
+         printf("%c", buffer[i]);
+      }
+      else printf(".");
+   }
 }
-
-unsigned char isConnected();
