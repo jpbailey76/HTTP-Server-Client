@@ -14,11 +14,11 @@
 #define SUCCESS 0
 #define BUFF_SIZE 2048
 #define PORT 60069
-
 #define RED "\x1b[31m"
 #define YELLOW   "\x1B[33m"
 #define RESET "\x1B[0m"
 
+// HTTP Headers
 const char HEADER[] = "HTTP/1.1 200 OK		\n\
 										Server: Hostname		\n\
 										Content-Length: %ld		\
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 					}
 					fclose(fp);
 				}
-				else	// They sent us an invalid request, so we send them the error header.
+				else	// Invalid request, so we send the error header.
 					write(clientSockfd, ERROR_HEADER, strlen(ERROR_HEADER));
 			}
 			free(path);
@@ -147,6 +147,14 @@ int main(int argc, char **argv)
 	return SUCCESS;
 }
 
+
+/**
+ * Checks that the passed in header is valid.
+ * We allow only HTTP/1.1.
+ * @param  header - HTTP Header
+ * @param  path   - File path
+ * @return int    - 0 if succesful, -1 if error
+ */
 int checkHeader(char *header, char *path)
 {
 	char *requestType, *file, *protocol;
@@ -173,6 +181,11 @@ int checkHeader(char *header, char *path)
 	return ERROR;
 }
 
+/**
+ * Gets the size of a file in bytes.
+ * @param  path - Path to the file
+ * @return int 	- Size of the file in bytes or -1 if file is invalid.
+ */
 int getFileSize(char *path)
 {
 	int result = 0, count;
@@ -202,6 +215,12 @@ int getFileSize(char *path)
 	return result;
 }
 
+/**
+ * Verify the file extension of the requested file.
+ * We allow .html or .jpg
+ * @param  path - Path to the file
+ * @return int  - 0 if valid, -1 if invalid
+ */
 int verifyExtension(char *path)
 {
 	// Parse the path until you reach the file extension
