@@ -24,8 +24,8 @@ int main(int argc, char **argv)
    * httpAddress = address of HTTP server to connect
    * fileRequest = name of file to request from server
    */
-  char* httpAddress = (char*)calloc(MAX_LENGTH, sizeof(char));
-  char* fileRequest = (char*)calloc(MAX_LENGTH, sizeof(char));
+  char httpAddress[MAX_LENGTH];
+  char fileRequest[MAX_LENGTH];
   
   /* server port */
   int httpPort;
@@ -43,10 +43,10 @@ int main(int argc, char **argv)
   while(invalid)
 	{
   	printf("Enter address of HTTP server: ");
-  	scanf("%256s", httpAddress);
+  	scanf("%s", &httpAddress);
 
   	printf("Enter port on HTTP server: ");
-  	scanf("%d", httpPort);
+  	scanf("%d", &httpPort);
 
 	  /* check if the address is valid */
   	server = gethostbyname((char*)httpAddress);
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 	       server->h_length);
   serverAddr.sin_family = AF_INET;
 
-  printf("HTTPPORT = [%s]", httpPort);
+  printf("HTTPPORT = [%d]", httpPort);
 
 	serverAddr.sin_port = htons(httpPort);
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
