@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 					while((size = read(filefd, buff, BUFF_SIZE)) != 0) 
 					{
 						write(clientSockfd, buff, size);
-						printf(YELLOW"\nSending File\n============="RESET"\n%s\n"YELLOW"=============\n"RESET, buff);
+						printf(YELLOW"\nSending Data:\n============="RESET"\n%s\n"YELLOW"=============\n"RESET, buff);
 						memset(buff, 0, strlen(buff));
 					}
 					fclose(fp);
