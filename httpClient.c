@@ -38,27 +38,27 @@ int main(int argc, char **argv)
   struct sockaddr_in serverAddr;
   struct hostent *server;
   
+  int invalid = 1;
   /* get HTTP address from user */
-  printf("Hello! I'm a talking string!\n");
-  printf("Enter address of HTTP server: ");
-  scanf("%256s", httpAddress);
+  while(invalid)
+	{
+  	printf("Enter address of HTTP server: ");
+  	scanf("%256s", httpAddress);
 
-  printf("\nYou entered the address [%s]\n", httpAddress);
-  printf("String length is %d\n", (int)strlen((const char*)httpAddress));
-  
-  printf("Enter port on HTTP server: ");
-  scanf("%hu", httpPort);
-  
-  printf("\nYou entered the port %d\n", *httpPort);
-  server = gethostbyname((char*)httpAddress);
-  
-  /* check if the address is valid */
-  if(server == NULL)
-  {
-     printf("\nError! No such host at \"%s\"\n", httpAddress);
-     exit(1);
+  	printf("Enter port on HTTP server: ");
+  	scanf("%hu", httpPort);
+
+	  /* check if the address is valid */
+  	server = gethostbyname((char*)httpAddress);
+	  if(server == NULL)
+	  {
+	     printf("\nError! No such host at \"%s\"\n", httpAddress);
+	     invalid == 1;
+		}
+  	else
+  		invalid = 0
   }
-  
+
   /* create the client socket */
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	bcopy((char*)server->h_addr,(char*)&serverAddr.sin_addr.s_addr,
