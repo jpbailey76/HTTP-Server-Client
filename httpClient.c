@@ -40,7 +40,6 @@ int main(int argc, char **argv)
   
   /* get HTTP address from user */
   printf("Hello! I'm a talking string!\n");
-  
   printf("Enter address of HTTP server: ");
   scanf("%256s", httpAddress);
 
@@ -95,9 +94,6 @@ int main(int argc, char **argv)
   memset(request, 0, sizeof(request));
 	sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
 	strcat(request, "Connection: Keep-Alive\r\n\r\n");
-
-	printf("\nBUFFER1 = [%s]\n", request);
-	printf("DEBUG1\n");
 	
 	req = write(sockfd, request, strlen(request));
 	if(req < 0)
@@ -107,15 +103,9 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-			printf("DEBUG2\n");
 	   while(write(sockfd, request, sizeof(request)) > 0);
-			printf("DEBUG3\n");
 	}
-	
-	printf("BUFFER2 = [%s]\n", request);
-
-	printf("DEBUG4\n");
-
+	printf("\nBUFFER2 = [%s]\n", request);
 
 	bzero(request, MAX_MESSAGE_LENGTH);
 	
