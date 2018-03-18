@@ -58,127 +58,79 @@ int main(int argc, char **argv)
   	else
   		invalid = 0;
   }
+	
+	invalid = 1;
+	while(invalid)
+	{
+		/* create the client socket */
+		memset(&serverAddr, 0, sizeof(serverAddr));
+		bcopy((char*)server->h_addr,(char*)&serverAddr.sin_addr.s_addr,
+		       server->h_length);
+	  serverAddr.sin_family = AF_INET;
+		serverAddr.sin_port = htons(httpPort);
+		sockfd = socket(AF_INET, SOCK_STREAM, 0);
+		
+		/* check the socket */
+		if(sockfd < 0)
+		{
+		   printf("\nError! Could not open socket\n");
+		   close(sockfd);
+		   continue;
+		}
+		
+		/* test connection */
+		if(connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0)
+		{
+		   printf("\nError: Connection to server failed!\n");
+		   close(sockfd);
+		   continue;
+		}
+		else
+		{
+		   printf("\nConnected to server.\n");
+		}
 
-  /* create the client socket */
-	memset(&serverAddr, 0, sizeof(serverAddr));
-	bcopy((char*)server->h_addr,(char*)&serverAddr.sin_addr.s_addr,
-	       server->h_length);
-  serverAddr.sin_family = AF_INET;
+		int req;
+		char request[MAX_MESSAGE_LENGTH];
+		char response[MAX_MESSAGE_LENGTH];
+		printf("\nWhat file do you want? ");
+		scanf("%256s", fileRequest);
 
-  printf("HTTPPORT = [%d]", httpPort);
+		memset(request, 0, sizeof(request));
+		sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
+		strcat(request, "Connection: Keep-Alive\r\n\r\n");
 
-	serverAddr.sin_port = htons(httpPort);
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	
-	/* check the socket */
-	if(sockfd < 0)
-	{
-	   printf("\nError! Could not open socket\n");
-	   exit(1);
-	}
-	
-	/* test connection */
-	if(connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0)
-	{
-	   printf("\nError! Connection to server failed!\n");
-	   return 0;
-	}
-	else
-	{
-	   printf("\nHey! We're connected!!!\n");
-	}
-	
-	int req;
-	char request[MAX_MESSAGE_LENGTH];
-	printf("\nWhat file do you want? ");
-	scanf("%256s", fileRequest);
+		// Send the request
+		req = write(sockfd, request, sizeof(request));
+		if(req < 0)
+		{
+		   printf("\nError: Could not write to socket!\n");
+		   continue;
+		}
+		else
+		{
+		   printf("\nRequest sent!\n");
+		}
+		printf("\nBUFFER2 = [%s]\n", request);
+		bzero(request, MAX_MESSAGE_LENGTH);
 
-  memset(request, 0, sizeof(request));
-	sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
-	strcat(request, "Connection: Keep-Alive\r\n\r\n");
-	
-	req = write(sockfd, request, strlen(request));
-	if(req < 0)
-	{
-	   printf("\nError! Could not write to socket!\n");
-	   exit(1);
+		// Read the response
+		req = read(sockfd, response, MAX_MESSAGE_LENGTH);
+		if(req < 0)
+		{
+		   printf("\nError! Could not read from socket!\n");
+		   exit(1);
+		}
+		else
+		{
+			printf("\nReceiving response.\n");
+		   // while(read(sockfd, request, sizeof(request)) > 0);
+		}
+		printf("Server Response:\n");
+		printf("================\n");
+		printf("%s", response);
+		close(sockfd);
 	}
-	else
-	{
-	   while(write(sockfd, request, sizeof(request)) > 0);
-	}
-	printf("\nBUFFER2 = [%s]\n", request);
-
-	bzero(request, MAX_MESSAGE_LENGTH);
-	
-	req = read(sockfd, request, MAX_MESSAGE_LENGTH);
-	if(req < 0)
-	{
-	   printf("\nError! Could not read from socket!\n");
-	   exit(1);
-	}
-	else
-	{
-	   while(read(sockfd, request, sizeof(request)) > 0);
-	}
-	
-	printf("\n\n\n\n\n");
-	
-	printf("Buffer: [%s]\n", request);
-	bzero(request, MAX_MESSAGE_LENGTH);
-	bzero(fileRequest, MAX_LENGTH);
-	printf("Buffer is now [%s]\n", request);
-	printf("Req is now [%s]\n", fileRequest);
-  printf("\nWhat file do you want? ");
-	scanf("%256s", fileRequest);
-	
-	bzero(request, MAX_MESSAGE_LENGTH);
-	sprintf(request, "GET %s HTTP/1.1\r\n", fileRequest);
-	req = write(sockfd, request, strlen(request));
-	if(req < 0)
-	{
-	   printf("\nError! Could not write to socket!\n");
-	   exit(1);
-	}
-	else
-	{
-	   while(write(sockfd, request, sizeof(request)) > 0);
-	}
-	
-	bzero(request, MAX_MESSAGE_LENGTH);
-	
-	req = read(sockfd, request, MAX_MESSAGE_LENGTH);
-	if(req < 0)
-	{
-	   printf("\nError! Could not read from socket!\n");
-	   exit(1);
-	}
-	else
-	{
-	   while(read(sockfd, request, sizeof(request)) > 0);
-	}
-  
-  printf("Buffer: [%s]\n", request);
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  /* while we're connected, allow the user to keep requesting for additional
-     files */
-     
-     /*
-  while(isConnected())
-  {
-     requestFile();
-  }
-  return 0;
-  */
   
   return 0;
 }
