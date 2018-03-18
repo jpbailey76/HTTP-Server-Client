@@ -28,7 +28,7 @@ int main(int argc, char **argv)
   char* fileRequest = (char*)calloc(MAX_LENGTH, sizeof(char));
   
   /* server port */
-  unsigned short* httpPort = (unsigned short*)calloc(1, sizeof(short));
+  int httpPort;
   
   /* boolean to check if we're still connected to the server */
   // char isConnected = 0;
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
   	scanf("%256s", httpAddress);
 
   	printf("Enter port on HTTP server: ");
-  	scanf("%hu", httpPort);
+  	scanf("%d", httpPort);
 
 	  /* check if the address is valid */
   	server = gethostbyname((char*)httpAddress);
@@ -64,8 +64,10 @@ int main(int argc, char **argv)
 	bcopy((char*)server->h_addr,(char*)&serverAddr.sin_addr.s_addr,
 	       server->h_length);
   serverAddr.sin_family = AF_INET;
-	serverAddr.sin_port = htons(*httpPort);
-	
+
+  printf("HTTPPORT = [%s]", httpPort);
+
+	serverAddr.sin_port = htons(httpPort);
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	
 	/* check the socket */
